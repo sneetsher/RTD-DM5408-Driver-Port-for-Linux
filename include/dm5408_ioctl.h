@@ -4,6 +4,11 @@
 #include <linux/ioctl.h>
 #include <linux/types.h>
 
+// ToDo: check is it valid, char may be unsigned by default
+#ifndef uchar
+#define uchar unsigned char
+#endif
+
 #define IOBASE		0x0300	// Default Base Address
 #define IOSPACE		16		// IO Space Range
 #define IRQS		2		// Number of IRQ's
@@ -11,6 +16,7 @@
 #define FREQ		8000000	// Working Freqency
 #define MAX_DEVS	4		// Maximum Number of Devices
 #define DEV_NAME	"/dev/dm5408"	// Device Path
+
 
 #ifdef __cplusplus
 extern "C" {
@@ -53,13 +59,13 @@ enum dm5408_registers_t
 	REG_DAC2_MSB			= 15,	// W	- DAC2 Data MSB
 };
 
-// DM5408 Clear Flags for BASE+0. ToMove to a header
+// DM5408 Clear Flags for BASE+0.
 enum dm5408_clr_flags_t
 {
 	CLEAR_FIFO			= 0x00,	// Clear FIFO
 	CLEAR_GAIN_TABLE	= 0x01,	// Clear Channel-Gain Table
-	RESET_GAIN_TABLE	= 0x10,	// Reset Channel-Gain Table
-	CLEAR_BOARD			= 0x11,	// Clear Board
+	RESET_GAIN_TABLE	= 0x02,	// Reset Channel-Gain Table
+	CLEAR_BOARD			= 0x03,	// Clear Board
 };
 
 #ifdef __cplusplus
