@@ -23,10 +23,35 @@
 #include <asm/io.h>
 #include <asm/uaccess.h>
 
-#include "../include/dm5408_mod.h"
 #include "../include/dm5408_ioctl.h"
 
 static ushort io_base = IOBASE;	// Module Parameter
+
+// DM5408 Device Structure with spinlock
+typedef struct dm5408_device
+{
+	ushort		io_base;
+	ushort		reg_control,	// Temp Variables
+				reg_trigger0,
+				reg_trigger1,
+				reg_irq;
+	atomic_t	inuse_counter;
+	spinlock_t	spin_lock;
+} dm5408_device_t ;
+
+// DM5408 File Operation Functionds
+static int dm5408_open(struct inode *, struct file *);
+static int dm5408_release(struct inode *, struct file *);
+static int dm5408_ioctl(struct inode *, struct file *, uint cmd, ulong arg);
+
+// DM5408 File Operation Structure
+static struct file_operations dm5408_fops =
+{
+    .owner =    THIS_MODULE,
+    .open =     dm5408_open,
+    .ioctl =    dm5408_ioctl,
+    .release =  dm5408_release,
+};
 
 // Module Init Function
 static int __init initialization_function(void)

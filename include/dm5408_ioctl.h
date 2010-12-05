@@ -4,6 +4,14 @@
 #include <linux/ioctl.h>
 #include <linux/types.h>
 
+#define IOBASE		0x0300	// Default Base Address
+#define IOSPACE		16		// IO Space Range
+#define IRQS		2		// Number of IRQ's
+#define DMAS		2		// Number of DMA's
+#define FREQ		8000000	// Working Freqency
+#define MAX_DEVS	4		// Maximum Number of Devices
+#define DEV_NAME	"/dev/dm5408"	// Device Path
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -15,7 +23,7 @@ enum dm5408_registers_t
 	REG_CONTROL				= 0,	// W	- Control Register
 	REG_START_CONVERSION	= 1,	// R	- Conversion
 	REG_GAIN				= 1,	// W	- Channel/Gain Register
-	REG_ADC_TABLE			= 1,	// W	- AD Table
+	REG_AD_TABLE			= 1,	// W	- AD Table
 	REG_DIGITAL_TABLE		= 1,	// W	- Digital Table
 	REG_ADC_LSB				= 2,	// R	- ADC Data LSB
 	REG_TRIGGERS			= 2,	// W	- Triggers
