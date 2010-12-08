@@ -10,6 +10,8 @@
 #endif
 
 #define IOBASE		0x0300	// Default Base Address
+#define IOBASE_MIN	0x0300	// Minimum Base Address
+#define IOBASE_MAX	0x03F0	// Maximum Base Address
 #define IOSPACE		16		// IO Space Range
 #define IRQS		2		// Number of IRQ's
 #define DMAS		2		// Number of DMA's
@@ -22,8 +24,9 @@
 extern "C" {
 #endif
 
+
 // DM5408 Device Registers with offset
-enum dm5408_registers_t
+enum dm5408_registers
 {
 	REG_STATUS				= 0,	// R	- Status Register
 	REG_CONTROL				= 0,	// W	- Control Register
@@ -59,6 +62,28 @@ enum dm5408_registers_t
 	REG_DAC2_MSB			= 15,	// W	- DAC2 Data MSB
 };
 
+// ioctl structures
+struct dm5408_io8
+{
+	enum dm5408_registers	reg;
+	uchar					val;
+};
+
+struct dm5408_mio8
+{
+	enum dm5408_registers	reg;
+	uchar					val;
+	uchar					mask;
+};
+
+// ioctl codes
+#define __DM5408_IOC_MAGIC 0xD5
+
+#define DM5408_IOC_INB		_IOWR (__DM5408_IOC_MAGIC, 0x00, struct dm5408_io8)
+#define DM5408_IOC_OUTB		_IOW  (__DM5408_IOC_MAGIC, 0x01, struct dm5408_io8)
+#define DM5408_IOC_MOUTB	_IOW  (__DM5408_IOC_MAGIC, 0x02, struct dm5408_mio8)
+
+
 // DM5408 Clear Flags for BASE+0.
 enum dm5408_clr_flags_t
 {
@@ -67,6 +92,7 @@ enum dm5408_clr_flags_t
 	RESET_GAIN_TABLE	= 0x02,	// Reset Channel-Gain Table
 	CLEAR_BOARD			= 0x03,	// Clear Board
 };
+
 
 #ifdef __cplusplus
 } // extern "C"

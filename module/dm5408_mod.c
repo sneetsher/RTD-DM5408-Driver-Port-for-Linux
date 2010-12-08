@@ -33,7 +33,7 @@ static ushort io_base[MAX_DEVS] = {IOBASE};	// Module Parameter
 static uchar dev_major = 0;
 
 // DM5408 Device Structure with spinlock
-typedef struct dm5408_device
+struct dm5408_device
 {
 	ushort		io_base;		// Base address
 	uchar		initialized;	// Initialization flag
@@ -43,16 +43,16 @@ typedef struct dm5408_device
 				reg_irq;
 	atomic_t	use_counter;	// Inuse atomic counter
 	spinlock_t	spin_lock;		// Spinlock
-} dm5408_device_t ;
+};
 
-static dm5408_device_t devices[MAX_DEVS];
+static struct dm5408_device devices[MAX_DEVS];
 
 
 // DM5408 File Operation Functions
 static int dm5408_open(struct inode *inode_ptr, struct file *file_ptr)
 {
 	int call_result = 0; // ToDo: Check if still needed
-	dm5408_device_t *dev_ptr;
+	struct dm5408_device *dev_ptr;
 	int dev_minor;
 
 	#ifdef DEBUG
@@ -64,7 +64,6 @@ static int dm5408_open(struct inode *inode_ptr, struct file *file_ptr)
 	if (!dev_ptr) return -ENXIO;
 	if (!dev_ptr->io_base) return -ENXIO;
 
-// ToDo: func extraction
 	if (dev_ptr->initialized || !dev_ptr->io_base) return call_result;
 	if (request_region(dev_ptr->io_base, IOSPACE, dev_name) == NULL)
 	{
@@ -79,14 +78,8 @@ static int dm5408_open(struct inode *inode_ptr, struct file *file_ptr)
 	dev_ptr->reg_trigger0 = 0;
 	dev_ptr->reg_trigger1 = 0;
 	dev_ptr->reg_irq = 0;
-	// ToDo: outb regs
 
 	dev_ptr->initialized = 1;
-// ToDo: func extraction end
-
-// ToDo: to convert
-//DM6420HRClear()
-// ToDo: to convert end
 
 	if (file_ptr->private_data) return -EBUSY;
 
@@ -104,8 +97,8 @@ static int dm5408_open(struct inode *inode_ptr, struct file *file_ptr)
 
 static int dm5408_release(struct inode *inode_ptr, struct file *file_ptr)
 {
-	dm5408_device_t *dev_ptr;
-	dev_ptr = (dm5408_device_t *) file_ptr->private_data;
+	struct dm5408_device *dev_ptr;
+	dev_ptr = (struct dm5408_device *) file_ptr->private_data;
 
 	if (dev_ptr)
 	{
@@ -123,7 +116,49 @@ static int dm5408_release(struct inode *inode_ptr, struct file *file_ptr)
 
 static int dm5408_ioctl(struct inode *inode_ptr, struct file *file_ptr, uint cmd, ulong arg)
 {
-	return 0;
+	int		call_result = 0;
+	ulong	lock_flags;
+	uchar	val;
+	struct dm5408_device *dev_ptr;
+	struct dm5408_io8	data_io8;
+	struct dm5408_mio8	data_mio8;
+
+	dev_ptr = (struct dm5408_device *) file_ptr->private_data;
+	if (!dev_ptr) return -EINVAL;
+	switch (cmd)
+	{
+		case DM5408_IOC_INB:
+			if (!(file_ptr->f_mode & FMODE_READ)) return -EACCES;
+			if (copy_from_user(&data_io8, (struct dm5408_io8 *) arg, sizeof(data_io8))) return -EFAULT;
+			if (data_io8.reg >= IOSPACE) return -EINVAL;
+			spin_lock_irqsave( &dev_ptr->spin_lock, lock_flags);
+			data_io8.val = inb_p(dev_ptr->io_base + data_io8.reg);
+			spin_unlock_irqrestore( &dev_ptr->spin_lock, lock_flags);
+			break;
+
+		case DM5408_IOC_OUTB:
+			if (copy_from_user(&data_io8, (struct dm5408_io8 *) arg, sizeof(data_io8))) return -EFAULT;
+			if (data_io8.reg >= IOSPACE) return -EINVAL;
+			spin_lock_irqsave( &dev_ptr->spin_lock, lock_flags);
+			outb_p(dev_ptr->io_base + data_io8.reg, data_io8.val);
+			spin_unlock_irqrestore( &dev_ptr->spin_lock, lock_flags);
+			break;
+
+		case DM5408_IOC_MOUTB:
+			if (copy_from_user(&data_mio8, (struct dm5408_mio8 *) arg, sizeof(data_mio8))) return -EFAULT;
+			if (data_mio8.reg >= IOSPACE) return -EINVAL;
+			spin_lock_irqsave( &dev_ptr->spin_lock, lock_flags);
+			val = inb_p(dev_ptr->io_base + data_mio8.reg);
+			val = (val & data_mio8.mask) | (data_mio8.val & ~data_mio8.mask);
+			outb_p(dev_ptr->io_base + data_mio8.reg, data_mio8.val);
+			spin_unlock_irqrestore( &dev_ptr->spin_lock, lock_flags);
+			break;
+
+		default:
+			call_result = -EINVAL;
+	};
+
+	return call_result;
 };
 
 
@@ -140,7 +175,6 @@ static struct file_operations dev_fops =
 // Module Init Function
 static int __init initialization_function(void)
 {
-
 	int dev_count;
 	ushort dev_addr;
 	int dev_addr_valid = 0;
@@ -149,9 +183,7 @@ static int __init initialization_function(void)
 	#ifdef DEBUG
 		int i;
 		for(i=0; i<MAX_DEVS; i++)
-		{
 			printk(KERN_INFO "DM5408: init_module() called with io_base=0x%04x.\n", io_base[i]);
-		};
 	#endif
 
 	// Addresses Validation
@@ -159,7 +191,7 @@ static int __init initialization_function(void)
 	{
 		dev_addr = io_base[dev_count];
 		if (!dev_addr) continue;
-		if ((dev_addr < 0x0300) || (dev_addr > 0x03F0) || (dev_addr & 0x000F)) {
+		if ((dev_addr < IOBASE_MIN) || (dev_addr > IOBASE_MAX) || (dev_addr & 0x000F)) {
 			printk(KERN_ERR "DM5408: invalid base address 0x%04x.\n", dev_addr);
         return -EINVAL;
 		};
@@ -188,7 +220,7 @@ static int __init initialization_function(void)
 
 	for( dev_count = 0; dev_count < MAX_DEVS; dev_count++)
 	{
-		dm5408_device_t *dev_ptr = &devices[dev_count];
+		struct dm5408_device *dev_ptr = &devices[dev_count];
 		atomic_set(&dev_ptr->use_counter, 0);
 		dev_ptr->spin_lock = SPIN_LOCK_UNLOCKED;
 		dev_ptr->io_base = io_base[dev_count];
