@@ -5,9 +5,9 @@
 #include <linux/types.h>
 
 // ToDo: check is it valid, char may be unsigned by default
-#ifndef uchar
-#define uchar unsigned char
-#endif
+typedef unsigned char uchar;
+typedef signed char schar;
+
 
 #define IOBASE		0x0300	// Default Base Address
 #define IOBASE_MIN	0x0300	// Minimum Base Address

@@ -52,8 +52,8 @@ static struct dm5408_device devices[MAX_DEVS];
 static int dm5408_open(struct inode *inode_ptr, struct file *file_ptr)
 {
 	int call_result = 0; // ToDo: Check if still needed
-	struct dm5408_device *dev_ptr;
 	int dev_minor;
+	struct dm5408_device *dev_ptr;
 
 	#ifdef DEBUG
 		printk(KERN_INFO "DM5408: dm5408_open() called.\n");
@@ -98,8 +98,12 @@ static int dm5408_open(struct inode *inode_ptr, struct file *file_ptr)
 static int dm5408_release(struct inode *inode_ptr, struct file *file_ptr)
 {
 	struct dm5408_device *dev_ptr;
-	dev_ptr = (struct dm5408_device *) file_ptr->private_data;
 
+	#ifdef DEBUG
+		printk(KERN_INFO "DM5408: dm5408_release() called.\n");
+	#endif
+
+	dev_ptr = (struct dm5408_device *) file_ptr->private_data;
 	if (dev_ptr)
 	{
 		if (atomic_dec_and_test(&dev_ptr->use_counter) && dev_ptr->initialized)
@@ -111,6 +115,11 @@ static int dm5408_release(struct inode *inode_ptr, struct file *file_ptr)
 		};
 	};
 	file_ptr->private_data = 0;
+
+	#ifdef DEBUG
+		printk(KERN_INFO "DM5408: dm5408_release() completed.\n");
+	#endif
+
 	return 0;
 };
 
@@ -123,28 +132,47 @@ static int dm5408_ioctl(struct inode *inode_ptr, struct file *file_ptr, uint cmd
 	struct dm5408_io8	data_io8;
 	struct dm5408_mio8	data_mio8;
 
+	#ifdef DEBUG
+		printk(KERN_INFO "DM5408: dm5408_ioctl() called.\n");
+	#endif
+
 	dev_ptr = (struct dm5408_device *) file_ptr->private_data;
 	if (!dev_ptr) return -EINVAL;
 	switch (cmd)
 	{
 		case DM5408_IOC_INB:
+			#ifdef DEBUG
+				printk(KERN_INFO "DM5408: dm5408_ioctl() - DM5408_IOC_INB called.\n");
+			#endif
 			if (!(file_ptr->f_mode & FMODE_READ)) return -EACCES;
 			if (copy_from_user(&data_io8, (struct dm5408_io8 *) arg, sizeof(data_io8))) return -EFAULT;
 			if (data_io8.reg >= IOSPACE) return -EINVAL;
 			spin_lock_irqsave( &dev_ptr->spin_lock, lock_flags);
 			data_io8.val = inb_p(dev_ptr->io_base + data_io8.reg);
 			spin_unlock_irqrestore( &dev_ptr->spin_lock, lock_flags);
-			break;
+			#ifdef DEBUG
+				printk(KERN_INFO "DM5408: dm5408_ioctl() - DM5408_IOC_INB completed.\n");
+			#endif
+		break;
 
 		case DM5408_IOC_OUTB:
+			#ifdef DEBUG
+				printk(KERN_INFO "DM5408: dm5408_ioctl() - DM5408_IOC_OUTB called.\n");
+			#endif
 			if (copy_from_user(&data_io8, (struct dm5408_io8 *) arg, sizeof(data_io8))) return -EFAULT;
 			if (data_io8.reg >= IOSPACE) return -EINVAL;
 			spin_lock_irqsave( &dev_ptr->spin_lock, lock_flags);
 			outb_p(dev_ptr->io_base + data_io8.reg, data_io8.val);
 			spin_unlock_irqrestore( &dev_ptr->spin_lock, lock_flags);
-			break;
+			#ifdef DEBUG
+				printk(KERN_INFO "DM5408: dm5408_ioctl() - DM5408_IOC_OUTB completed.\n");
+			#endif
+		break;
 
 		case DM5408_IOC_MOUTB:
+			#ifdef DEBUG
+				printk(KERN_INFO "DM5408: dm5408_ioctl() - DM5408_IOC_MOUTB called.\n");
+			#endif
 			if (copy_from_user(&data_mio8, (struct dm5408_mio8 *) arg, sizeof(data_mio8))) return -EFAULT;
 			if (data_mio8.reg >= IOSPACE) return -EINVAL;
 			spin_lock_irqsave( &dev_ptr->spin_lock, lock_flags);
@@ -152,11 +180,18 @@ static int dm5408_ioctl(struct inode *inode_ptr, struct file *file_ptr, uint cmd
 			val = (val & data_mio8.mask) | (data_mio8.val & ~data_mio8.mask);
 			outb_p(dev_ptr->io_base + data_mio8.reg, data_mio8.val);
 			spin_unlock_irqrestore( &dev_ptr->spin_lock, lock_flags);
-			break;
+			#ifdef DEBUG
+				printk(KERN_INFO "DM5408: dm5408_ioctl() - DM5408_IOC_MOUTB completed.\n");
+			#endif
+		break;
 
 		default:
 			call_result = -EINVAL;
 	};
+
+	#ifdef DEBUG
+		printk(KERN_INFO "DM5408: dm5408_ioctl() completed.\n");
+	#endif
 
 	return call_result;
 };
