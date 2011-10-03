@@ -1,0 +1,45 @@
+RTD DM5408 Driver Port for Linux
+
+
+Home:
+
+https://sourceforge.net/projects/dm5408/
+
+
+Description:
+
+A Linux driver for RTD DM5408 / DM408 ISA acquisition card. A DKMS module and 
+a dynamic library written from scratch but trying to keep same functions 
+structure of its official Windows 98 driver.
+
+
+Note:
+
+This is my first real project using C. I just want to learn writing Linux 
+drivers for simple electronic hardwares.
+I didn't test it for real hardware yet.
+
+
+Author:
+
+Abdellah Chelli (عبدالله شلي, username/sneetsher) abdellahchelli@gmail.com
+
+
+Installation:
+
+# DKMS kernel module
+# minimum needed ioctrl functions to read/write registers
+# no need for make because DKMS will do.
+cd src/mod
+make install
+
+# shared library
+# user space functions
+cd ../lib
+make
+make install
+
+# demo program
+cd ../bin
+make
+make install

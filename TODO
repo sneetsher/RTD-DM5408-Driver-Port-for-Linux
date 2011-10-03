@@ -1,0 +1,18 @@
+ToDo:
+
+Module:
+
+- IOCTL handler..done/untes
+- Autotools for building
+- DKMS, packaging
+- Add registers masks
+- IRQ Handlers
+- DMA Handles
+
+Library:
+
+- Add a function could assign io base address on runtime.
+
+Demo:
+
+- Read digital ports.

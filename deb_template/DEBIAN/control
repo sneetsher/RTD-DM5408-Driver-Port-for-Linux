@@ -1,0 +1,10 @@
+Package: dm5408
+Version: 0.1
+Architecture: all
+Maintainer: Abdellah Chelli <abdellahchelli@gmail.com>
+Installed-Size: 110K
+Depends: libc6 (>= 2.0), dkms
+Section: admin
+Priority: extra
+Homepage: http://www.sourceforge.net/projects/dm5408/
+Description: RTD DM5408/DM408 Driver for Linux.

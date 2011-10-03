@@ -1,0 +1,22 @@
+#!/bin/sh
+
+modname=dm5408
+modver=`dpkg-query -W -f='${Version}' $modname | awk -F "-" '{print $1}' | cut -d\: -f2`
+
+case "$1" in
+	configure)
+
+		echo "Adding module to DKMS"
+		dkms add -m $modname -v $modver -q
+		echo "Building module"
+		dkms build -m $modname -v $modver -q
+		echo "Installing module"
+		dkms install -m $modname -v $modver -q --force
+		echo "Updating rc.d"
+		update-rc.d $modname defaults
+		echo "Loading module"
+		service $modname start
+		echo "Done."
+	;;
+esac
+

@@ -1,5 +1,5 @@
-defaut:
+default:
 	doxygen Doxyfile
 
 clean:
-	rm -R doxygen
+	@rm -f -r doxygen

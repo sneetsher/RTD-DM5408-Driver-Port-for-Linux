@@ -1,0 +1,19 @@
+#!/bin/sh
+
+modname=dm5408
+modver=`dpkg-query -W -f='${Version}' $modname | awk -F "-" '{print $1}' | cut -d\: -f2`
+
+case "$1" in
+	remove|upgrade)
+		echo "Unloading module"
+		service $modname stop
+		echo "Updating rc.d"
+		update-rc.d -f $modname remove
+		echo "Uninstalling module"
+		dkms uninstall -m $modname -v $modver -q
+		echo "Removing module from DKMS"
+		dkms remove -m $modname -v $modver --all -q
+		echo "Done."
+	;;
+esac
+
