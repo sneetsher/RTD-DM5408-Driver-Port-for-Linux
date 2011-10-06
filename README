@@ -16,8 +16,10 @@ structure of its official Windows 98 driver.
 Note:
 
 This is my first real project using C. I just want to learn writing Linux 
-drivers for simple electronic hardwares.
-I didn't test it for real hardware yet.
+drivers for simple electronic hardwares. I use Ubuntu 10.04 for development.
+
+Well, I have tested both digital ports for input, :) Cool it works.
+(Testing machine: Celeron 1.2GHz/256MB/Debian 6.0.2.1/CLI)
 
 
 Author:
