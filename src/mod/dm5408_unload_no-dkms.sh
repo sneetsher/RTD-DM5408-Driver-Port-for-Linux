@@ -3,6 +3,6 @@
 module="dm5408"
 device="dm5408"
 
-rmmod ../src/mod/$module $* || exit 1
+rmmod $module $* || exit 1
 
 rm -f /dev/${device} /dev/${device}[0-3]

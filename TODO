@@ -2,10 +2,10 @@ ToDo:
 
 Module:
 
-- IOCTL handler..done/untes
+- IOCTL handler..done
 - Autotools for building
 - DKMS, packaging
-- Add registers masks
+- Registers masks
 - IRQ Handlers
 - DMA Handles
 
@@ -15,4 +15,4 @@ Library:
 
 Demo:
 
-- Read digital ports.
+- Read digital ports..done

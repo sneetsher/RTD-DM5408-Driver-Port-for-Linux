@@ -4,7 +4,7 @@ module="dm5408"
 device="dm5408"
 mode="664"
 
-insmod ../src/mod/$module.ko $* || exit 1
+insmod $module.ko $* || exit 1
 
 rm -f /dev/${device}[0-3]
 
