@@ -1,8 +1,8 @@
-OBJS = dm5408_demo.o
+OBJS := dm5408_demo.o
 
-SOURCE = dm5408_demo.c
-OUTPUT = dm5408_demo
-CFLAGS = -I../include -I../include -I/usr/include/dm5408 -I/usr/local/include/dm5408 -L../lib -L/usr/lib -ldm5408
+SOURCE := dm5408_demo.c
+OUTPUT := dm5408_demo
+CFLAGS := -I../include -I../include -I/usr/include/dm5408 -I/usr/local/include/dm5408 -L../lib -L/usr/lib -ldm5408
 
 CC ?= gcc
 

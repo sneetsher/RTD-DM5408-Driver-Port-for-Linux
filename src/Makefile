@@ -1,5 +1,5 @@
-SRCDIR = src
-SUBDIRS = mod lib bin
+SRCDIR := src
+SUBDIRS := mod lib bin
 
 
 .PHONY: all $(SUBDIRS)

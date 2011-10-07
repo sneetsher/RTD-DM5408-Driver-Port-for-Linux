@@ -1,4 +1,4 @@
-obj-m = dm5408.o
+obj-m := dm5408.o
 
 MODULE_NAME ?= dm5408
 MODULE_VERSION ?= 0.1
@@ -7,7 +7,7 @@ kernel_version ?= $(shell uname -r)
 PWD ?= $(shell pwd)
 
 all: prepare
-	@make -C /lib/modules/$(kernel_version)/build M=$(PWD) modules
+	make -C /lib/modules/$(kernel_version)/build M=$(PWD) modules
 
 clean:
 	@rm -f dm5408_ioctl.h
@@ -15,8 +15,7 @@ clean:
 
 prepare:
 	@cp -u ../include/dm5408_ioctl.h ./ \
-	|| @cp -u /usr/local/include/dm5408/dm5408_ioctl.h ./ \
-	|| @cp -u /usr/include/dm5408/dm5408_ioctl.h ./
+	|| @cp -u /usr/local/include/dm5408/dm5408_ioctl.h ./
 
 install: install-src install-dkms install-initd
 

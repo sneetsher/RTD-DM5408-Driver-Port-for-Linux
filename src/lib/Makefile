@@ -1,8 +1,8 @@
-OBJS = libdm5408.o
+OBJS := libdm5408.o
 
-SOURCE = libdm5408.c
-OUTPUT = libdm5408.so
-CFLAGS = -I../include -I/usr/include/dm5408 -I/usr/local/include/dm5408 -shared -fPIC
+SOURCE := libdm5408.c
+OUTPUT := libdm5408.so
+CFLAGS := -I../include -I/usr/include/dm5408 -I/usr/local/include/dm5408 -shared -fPIC
 
 CC ?= gcc
 
