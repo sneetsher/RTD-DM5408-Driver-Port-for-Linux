@@ -1,3 +1,10 @@
+* 2011-10-08 13:12:48 +0100  Abdellah Chelli (Sneetsher)
+commit: 6ec976ae55f51427c08a66b6c9bdf5dd1b2447a5
+
+  Add module install method without DKMS Add AUTHORS & ChangeLog files
+
+
+
 * 2011-10-07 23:51:41 +0100  Abdellah Chelli (Sneetsher)
 commit: f1d3aefc3caba297c4a634aa826e3e28c74d55f9
 

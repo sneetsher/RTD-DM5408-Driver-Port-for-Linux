@@ -1,7 +1,7 @@
 /*******************************************************************************
 
-    RTD DM5408 Acquisition Card Driver
-    Copyright (C) 2010  Abdellah Chelli <abdellahchelli@gmail.com>
+    RTD DM5408 Acquisition Card Driver Port for Linux
+    Copyright (C) 2010-2011  Abdellah Chelli <abdellahchelli@gmail.com>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
