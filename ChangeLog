@@ -1,0 +1,126 @@
+* 2011-10-07 23:51:41 +0100  Abdellah Chelli (Sneetsher)
+commit: f1d3aefc3caba297c4a634aa826e3e28c74d55f9
+
+  Update demo program to use ncurses lib
+
+
+
+* 2011-10-07 17:14:50 +0100  Abdellah Chelli (Sneetsher)
+commit: 107442e30eca9f201a4765446c279083e3840bd8
+
+  Replace = with := for all makefiles.
+
+
+
+* 2011-10-06 21:53:19 +0100  Abdellah Chelli (Sneetsher)
+commit: b1261f2f7de35a4a407bbfc45ec7d64758e774f6
+
+  Rename COPYING file
+
+
+
+* 2011-10-06 20:41:17 +0100  Abdellah Chelli (Sneetsher)
+commit: e1e3412d6eb889a9422aa769c2edbabcdc540048
+
+  Move manual module load/unload script into module folder
+
+
+
+* 2011-10-06 16:33:12 +0100  Abdellah Chelli (Sneetsher)
+commit: fad6ba3f75ede8cd98254ae31100c0f471c6e5e5
+
+  Update test note in README file, can read digital ports.
+
+
+
+* 2011-10-03 15:10:45 +0100  Abdellah Chelli (Sneetsher)
+commit: 3dcfe59592be5af220e455c21a75f5c2f83e196c
+
+  Remove previous source structure from git
+
+
+
+* 2011-10-03 15:09:30 +0100  Abdellah Chelli (Sneetsher)
+commit: 33f3fe446f93c14de9fe9af89692407156b69289
+
+  Mainly use of DKMS, Lib functions
+
+
+
+* 2010-12-10 12:02:08 +0100  Abdellah Chelli
+commit: 36d4ca07a7fce1fe9ef64b7cff9b76151ba57c1f
+
+  Add a demo program & the dymamic library
+
+Plus more debug messages to IOCTL function.
+More Makefiles: demo program, dymamic library and doxygen documentation.
+
+
+* 2010-12-08 21:58:59 +0100  Abdellah Chelli
+commit: 4e29823ee1174d79d8e48c5019b3c7e2aadc24d5
+
+  Fill IOCTL functions INB, OUTB & MOUB
+
+Add IOBASE Max & Min
+
+
+* 2010-12-07 15:53:58 +0100  Abdellah Chelli
+commit: be052f0a2e55127ffde4f0d329d6b3dc3a5fbb73
+
+  Adding module load/unload script
+
+with char dev nodes.
+
+
+* 2010-12-06 00:30:22 +0100  Abdellah Chelli
+commit: 9d8a9d0c92c1aa8c63dc0783aac5e14967cc3fcc
+
+  Fill functions
+
+Fill functions:
+ init_module
+ cleanup_module
+ dm5408_open
+ dm5408_release
+More:
+ register char dev on init_module
+ take iospace on dm5408_open
+
+
+* 2010-12-05 14:27:16 +0100  Abdellah Chelli
+commit: cbf8b848020773087d948f3ab40feb30d6258f31
+
+  Join the source, no need for more headers.
+
+Add of more Temp Reg variables.
+Add of File operations structure, no implimentation yet.
+
+
+* 2010-12-04 16:09:21 +0100  Abdellah Chelli
+commit: ca11f2f6b9498ad7a0ad315b2af3957f1bdfb42d
+
+  Spliting header for IOCTL
+
+
+
+* 2010-12-04 00:32:18 +0100  Abdellah Chelli
+commit: 6150780ed60224b158eee59eee682dd169476fa0
+
+  Add DM5408 Registers Map & Main Device Structure.\nAdd more headers.
+
+
+
+* 2010-11-30 23:23:00 +0100  Abdellah Chelli
+commit: 773c896f4ad253a1e690e6b99525207fe4905d37
+
+  Adding more headers & module infos, plus I/O base address parameter
+
+
+
+* 2010-11-29 12:28:56 +0100  Abdellah Chelli
+commit: 98c7577a85a0c301a75c8144849d66b75f0009bc
+
+  Adding simple kernel module template.
+
+
+

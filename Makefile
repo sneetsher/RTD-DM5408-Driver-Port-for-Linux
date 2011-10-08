@@ -5,9 +5,12 @@ TMP := $(MODULE_NAME)-$(MODULE_VERSION)
 doc:
 	$(MAKE) -C $@
 
+log:
+	@git log --format="* %ci  %an%ncommit: %H%n%n  %s%n%n%b%n" > ChangeLog
+
 clean:
-	rm -r -f ./$(TMP)
-	rm -f *.deb
+	@rm -r -f ./$(TMP)
+	@rm -f *.deb
 
 deb: subdirs
 	mkdir ./$(TMP)

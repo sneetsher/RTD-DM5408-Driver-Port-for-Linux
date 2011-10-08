@@ -1,47 +1,61 @@
 RTD DM5408 Driver Port for Linux
 
+Copyright (C) 2010-2011  Abdellah Chelli <abdellahchelli@gmail.com>
 
-Home:
+* Home:
 
 https://sourceforge.net/projects/dm5408/
 
 
-Description:
+* Description:
 
-A Linux driver for RTD DM5408 / DM408 ISA acquisition card. A DKMS module and 
-a dynamic library written from scratch but trying to keep same functions 
+A Linux driver for RTD DM5408 / DM408 ISA acquisition card. A DKMS module and
+a dynamic library written from scratch but trying to keep same functions
 structure of its official Windows 98 driver.
 
 
-Note:
+* Note:
 
-This is my first real project using C. I just want to learn writing Linux 
-drivers for simple electronic hardwares. I use Ubuntu 10.04 for development.
+This is my first real project using C. I just want to learn writing Linux
+drivers for simple electronic hardwares. I use Ubuntu 10.04 i368 for development.
 
 Well, I have tested both digital ports for input, :) Cool it works.
-(Testing machine: Celeron 1.2GHz/256MB/Debian 6.0.2.1/CLI)
+(Testing machine: Celeron 1.2GHz/256MB/Debian 6.0.2.1/i368/CLI)
 
 
-Author:
+* Authors:
 
-Abdellah Chelli (عبدالله شلي, username/sneetsher) abdellahchelli@gmail.com
+see AUTHORS file.
 
 
-Installation:
+* Installation:
 
 # DKMS kernel module
 # minimum needed ioctrl functions to read/write registers
 # no need for make because DKMS will do.
+
 cd src/mod
 make install
 
-# shared library
-# user space functions
+# In case, DKMS is not possible (Some distributions does not have DKMS yet)
+# dm5408_load_no-dkms.sh & dm5408_unload_no-dkms.sh are used to test module without installation;
+# You can use them to modify dm5408.sh which is the init.d script that use DKMS.
+# Keep in mind that the module is built only for current kernel,
+# rebuild is needed after any kernel update.
+
+cd src/mod
+make
+cp dm5408.ko /lib/modules/`uname -r`/updates/
+
+# Shared library
+# contains user space control functions
+
 cd ../lib
 make
 make install
 
-# demo program
+# Demo program
+
 cd ../bin
 make
 make install
