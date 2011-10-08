@@ -17,6 +17,8 @@ prepare:
 	@cp -u ../include/dm5408_ioctl.h ./ \
 	|| @cp -u /usr/local/include/dm5408/dm5408_ioctl.h ./
 
+	@chmod 666 dm5408_ioctl.h
+
 install: install-src install-dkms install-initd
 
 install-src: clean prepare

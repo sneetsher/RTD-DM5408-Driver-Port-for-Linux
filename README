@@ -28,6 +28,15 @@ Well, I have tested both digital ports for input, :) Cool it works.
 see AUTHORS file.
 
 
+* Build Dependencies:
+
+gcc
+make
+linux-headers (for module)
+dkms (recommended, for module)
+libncurses (for demo)
+
+
 * Installation:
 
 # DKMS kernel module
